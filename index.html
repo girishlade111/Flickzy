@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Flickzy - Discover trending movies, watch high-definition trailers, search genres, and curate your personalized cinema watchlist.">
+    <meta name="keywords" content="movies, trailers, cinema, streaming, flickzy, watch recommendations, film discovery">
+    <meta name="author" content="Girish Lade">
+    <meta property="og:title" content="Flickzy - Premium Movie & Trailer Discovery">
+    <meta property="og:description" content="Explore top-rated movies, watch official trailers, and manage your watchlist on Flickzy.">
+    <meta property="og:type" content="website">
+    <title>Flickzy — Discover Movies & Trailers</title>
+    
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Glow Effects -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <!-- Header Navbar -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="brand-logo">
+                <span class="logo-icon"><i class="fa-solid fa-clapperboard"></i></span>
+                <span class="logo-text">FLICK<span class="highlight">ZY</span></span>
+            </a>
+
+            <div class="search-bar-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search movies, actors, genres..." aria-label="Search movies">
+                <button id="clearSearchBtn" class="clear-btn hidden" title="Clear search"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <nav class="nav-links">
+                <a href="#hero" class="nav-link active"><i class="fa-solid fa-fire"></i> Featured</a>
+                <a href="#movies" class="nav-link"><i class="fa-solid fa-film"></i> Discover</a>
+                <button id="watchlistToggleBtn" class="watchlist-btn" id="watchlistBtn">
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span>Watchlist</span>
+                    <span id="watchlistBadge" class="badge">0</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section" id="hero">
+            <div class="hero-backdrop" id="heroBackdrop"></div>
+            <div class="hero-overlay"></div>
+            
+            <div class="hero-content" id="heroContent">
+                <div class="hero-tag"><i class="fa-solid fa-bolt"></i> Spotlight Movie</div>
+                <h1 id="heroTitle" class="hero-title">Dune: Part Two</h1>
+                <div class="hero-meta">
+                    <span class="rating-badge"><i class="fa-solid fa-star"></i> <span id="heroRating">8.6</span></span>
+                    <span id="heroYear" class="meta-tag">2024</span>
+                    <span id="heroDuration" class="meta-tag">2h 46m</span>
+                    <span id="heroGenre" class="genre-pill">Sci-Fi / Action</span>
+                </div>
+                <p id="heroOverview" class="hero-overview">
+                    Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.
+                </p>
+                <div class="hero-actions">
+                    <button id="heroPlayBtn" class="btn btn-primary"><i class="fa-solid fa-play"></i> Watch Trailer</button>
+                    <button id="heroWatchlistBtn" class="btn btn-secondary"><i class="fa-solid fa-plus"></i> Add to Watchlist</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Genre Filter Bar -->
+        <section class="filter-section">
+            <div class="section-container">
+                <div class="filter-pills" id="genreFilters">
+                    <button class="filter-btn active" data-genre="All">All Flicks</button>
+                    <button class="filter-btn" data-genre="Action">Action</button>
+                    <button class="filter-btn" data-genre="Sci-Fi">Sci-Fi</button>
+                    <button class="filter-btn" data-genre="Drama">Drama</button>
+                    <button class="filter-btn" data-genre="Thriller">Thriller</button>
+                    <button class="filter-btn" data-genre="Animation">Animation</button>
+                    <button class="filter-btn" data-genre="Comedy">Comedy</button>
+                </div>
+                <div class="sort-dropdown-wrapper">
+                    <label for="sortSelect" class="sort-label"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort:</label>
+                    <select id="sortSelect" class="sort-select">
+                        <option value="popular">Most Popular</option>
+                        <option value="rating">Top Rated</option>
+                        <option value="year">Newest Release</option>
+                        <option value="title">Alphabetical</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Movie Catalog Grid -->
+        <section class="catalog-section" id="movies">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title" id="catalogHeading">Trending Movies</h2>
+                    <span class="results-count" id="resultsCount">Showing 10 movies</span>
+                </div>
+
+                <div class="movie-grid" id="movieGrid">
+                    <!-- Movie Cards dynamically injected here -->
+                </div>
+
+                <div class="empty-state hidden" id="emptyState">
+                    <i class="fa-solid fa-film-slash empty-icon"></i>
+                    <h3>No Movies Found</h3>
+                    <p>Try adjusting your search terms or genre filters to find what you are looking for.</p>
+                    <button id="resetFilterBtn" class="btn btn-secondary">Reset Filters</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Watchlist Drawer Slideout -->
+    <aside class="watchlist-drawer" id="watchlistDrawer">
+        <div class="drawer-header">
+            <h3><i class="fa-solid fa-bookmark highlight"></i> Your Watchlist</h3>
+            <button id="closeDrawerBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-content" id="watchlistContent">
+            <!-- Watchlist items dynamically injected -->
+        </div>
+        <div class="drawer-footer">
+            <button id="clearWatchlistBtn" class="btn btn-ghost btn-full"><i class="fa-solid fa-trash-can"></i> Clear All</button>
+        </div>
+    </aside>
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+
+    <!-- Movie Details & Trailer Modal -->
+    <div class="modal-backdrop" id="movieModal">
+        <div class="modal-card">
+            <button id="closeModalBtn" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-video-container" id="modalVideoContainer">
+                <iframe id="modalIframe" src="" title="Movie Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="modal-body">
+                <div class="modal-header-info">
+                    <h2 id="modalTitle" class="modal-title">Movie Title</h2>
+                    <div class="modal-meta">
+                        <span id="modalRating" class="rating-badge"><i class="fa-solid fa-star"></i> 8.5</span>
+                        <span id="modalYear" class="meta-tag">2024</span>
+                        <span id="modalDuration" class="meta-tag">2h 15m</span>
+                        <span id="modalGenre" class="genre-pill">Genre</span>
+                    </div>
+                </div>
+                <p id="modalOverview" class="modal-overview">Detailed overview of the selected movie goes here.</p>
+                <div class="modal-cast">
+                    <strong>Cast:</strong> <span id="modalCast">Actor 1, Actor 2, Actor 3</span>
+                </div>
+                <div class="modal-actions">
+                    <button id="modalWatchlistBtn" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add to Watchlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <span class="logo-text">FLICK<span class="highlight">ZY</span></span>
+                <p>Your ultimate destination for cinematic discovery & trailers.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#hero">Featured</a>
+                <a href="#movies">Catalog</a>
+                <a href="https://github.com/girishlade111/Flickzy" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+            </div>
+            <div class="footer-copy">
+                &copy; 2026 Flickzy. Built with <i class="fa-solid fa-heart highlight"></i> by Girish Lade.
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
