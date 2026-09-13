@@ -159,9 +159,7 @@ export async function getArchiveItemDetails(identifier) {
     try {
       const res = await fetcher(API_BASE.metadata(identifier))
       if (!res.ok) {
-        console.warn(
-          `[useArchiveOrg] Metadata request failed (${res.status}) for "${identifier}"`,
-        )
+        console.warn(`[useArchiveOrg] Metadata request failed (${res.status}) for "${identifier}"`)
         return null
       }
 
@@ -240,9 +238,7 @@ export function searchArchiveMovies(query, collection = 'moviesandfilms', option
         }
       }
 
-      await Promise.all(
-        Array.from({ length: Math.min(concurrency, queue.length) }, () => worker()),
-      )
+      await Promise.all(Array.from({ length: Math.min(concurrency, queue.length) }, () => worker()))
 
       console.info(`[useArchiveOrg] Search "${query}" → ${mapped.length} playable result(s)`)
       return mapped
@@ -270,9 +266,7 @@ export function searchArchiveMovies(query, collection = 'moviesandfilms', option
 function mapItem(meta, data, video) {
   const identifier = String(meta.identifier || (data && data.dir) || '')
   const thumb = API_BASE.thumbnail(identifier)
-  const description = Array.isArray(meta.description)
-    ? meta.description[0]
-    : meta.description
+  const description = Array.isArray(meta.description) ? meta.description[0] : meta.description
 
   return {
     id: `archive:${identifier}`,
@@ -312,4 +306,3 @@ function toRating(value) {
   if (!Number.isFinite(parsed) || parsed <= 0) return null
   return Math.round(Math.min(parsed, 10) * 10) / 10
 }
-
