@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// App shell: sticky nav + routed views. `@` alias resolves to `src/`.
-import { RouterLink, RouterView } from 'vue-router'
+  // App shell: sticky nav + routed views. `@` alias resolves to `src/`.
+  import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -23,4 +23,3 @@ import { RouterLink, RouterView } from 'vue-router'
     <RouterView />
   </div>
 </template>
-

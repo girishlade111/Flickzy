@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useWatchlistStore } from '@/stores/watchlist'
+  import { onMounted } from 'vue'
+  import { useWatchlistStore } from '@/stores/watchlist'
 
-const watchlist = useWatchlistStore()
+  const watchlist = useWatchlistStore()
 
-onMounted(() => {
-  watchlist.load()
-})
+  onMounted(() => {
+    watchlist.load()
+  })
 </script>
 
 <template>
   <main class="mx-auto max-w-6xl px-6 py-12">
     <h1 class="text-3xl font-bold tracking-tight">About Flickzy</h1>
     <p class="mt-3 max-w-prose text-muted">
-      A premium movie &amp; trailer discovery app built with the modern Vue 3 stack:
-      Vite, Vue Router, Pinia, Tailwind CSS, and IndexedDB (via the
+      A premium movie &amp; trailer discovery app built with the modern Vue 3 stack: Vite, Vue
+      Router, Pinia, Tailwind CSS, and IndexedDB (via the
       <code class="rounded bg-surface px-1.5 py-0.5 text-sm text-accent-300">idb</code> package).
     </p>
 

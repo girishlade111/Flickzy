@@ -1,8 +1,8 @@
 <script setup lang="ts">
-// `@` alias resolves to `src/` (see vite.config.ts + tsconfig.app.json paths)
-import { useAppMeta } from '@/composables/useAppMeta'
+  // `@` alias resolves to `src/` (see vite.config.ts + tsconfig.app.json paths)
+  import { useAppMeta } from '@/composables/useAppMeta'
 
-const { title, tagline } = useAppMeta()
+  const { title, tagline } = useAppMeta()
 </script>
 
 <template>
