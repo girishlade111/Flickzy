@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProfilesStore } from '@/stores/profiles'
 import ProfileFormModal from '@/components/ProfileFormModal.vue'
@@ -175,57 +175,6 @@ async function handleModalSave(savedProfile: Profile) {
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useProfilesStore } from '@/stores/profiles'
-import ProfileFormModal from '@/components/ProfileFormModal.vue'
-import type { Profile } from '@/db/db'
-
-const router = useRouter()
-const profilesStore = useProfilesStore()
-
-const showProfileModal = ref(false)
-const editingProfile = ref<Profile | null>(null)
-
-onMounted(async () => {
-  await profilesStore.load()
-  if (profilesStore.activeProfile) {
-    router.replace('/home')
-  }
-})
-
-async function selectProfile(profile: Profile) {
-  profilesStore.setActiveProfile(profile)
-  await router.push('/home')
-}
-
-function openCreateProfile() {
-  editingProfile.value = null
-  showProfileModal.value = true
-}
-
-function openEditProfile(profile: Profile) {
-  editingProfile.value = profile
-  showProfileModal.value = true
-}
-
-async function handleDeleteProfile(profile: Profile) {
-  if (!confirm(`Delete "${profile.name}"? This will remove all watch progress for this profile.`)) {
-    return
-  }
-  await profilesStore.deleteProfile(profile.id)
-}
-
-async function handleModalSave(savedProfile: Profile) {
-  // If creating new profile, set as active and navigate
-  if (!editingProfile.value) {
-    profilesStore.setActiveProfile(savedProfile)
-    await router.push('/home')
-  }
-}
-</script>
 
 <style scoped>
 @keyframes fadeIn {
