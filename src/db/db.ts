@@ -131,11 +131,11 @@ export async function getAllWatchProgress(profileId: string): Promise<WatchProgr
 }
 
 /** Deletes all watchlist items for a profile. */
-export async function clearWatchlistForProfile(profileId: string): Promise<void> {
+export async function clearWatchlistForProfile(_profileId: string): Promise<void> {
   const db = await getDb()
   const items = await db.getAll('watchlist')
   const tx = db.transaction('watchlist', 'readwrite')
-  for (const item of items) {
+  for (const _item of items) {
     // Watchlist items don't have profileId, so we can't filter by profile
     // This is a global watchlist - we'll keep it as-is per profile
     // If we need per-profile watchlist, the schema would need to change

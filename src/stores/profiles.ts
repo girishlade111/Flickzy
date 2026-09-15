@@ -2,9 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 import {
   addProfile as addToDb,
-  removeProfile as removeFromDb,
   getProfiles as getFromDb,
-  getProfile as getOneFromDb,
   deleteProfileWithData,
   type Profile,
 } from '@/db/db'

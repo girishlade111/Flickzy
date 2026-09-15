@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useProfilesStore } from '@/stores/profiles'
 import type { Profile } from '@/db/db'
 
@@ -208,100 +208,6 @@ function handleKeydown(e: KeyboardEvent) {
     </div>
   </Transition>
 </template>
-
-<script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from 'vue'
-import { useProfilesStore } from '@/stores/profiles'
-import type { Profile } from '@/db/db'
-
-interface Props {
-  modelValue: boolean
-  editingProfile?: Profile | null
-}
-
-interface Emits {
-  (e: 'update:modelValue', value: boolean): void
-  (e: 'save', profile: Profile): void
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
-
-const profilesStore = useProfilesStore()
-
-const formName = ref('')
-const formAvatar = ref(profilesStore.getRandomAvatar())
-const formIsKids = ref(false)
-const isSubmitting = ref(false)
-const error = ref('')
-
-watch(() => props.modelValue, (open) => {
-  if (open) {
-    if (props.editingProfile) {
-      formName.value = props.editingProfile.name
-      formAvatar.value = props.editingProfile.avatar
-      formIsKids.value = props.editingProfile.isKids || false
-    } else {
-      formName.value = ''
-      formAvatar.value = profilesStore.getRandomAvatar()
-      formIsKids.value = false
-    }
-    error.value = ''
-    nextTick(() => {
-      nameInput.value?.focus()
-    })
-  }
-})
-
-const nameInput = ref<HTMLInputElement | null>(null)
-
-function handleClose() {
-  emit('update:modelValue', false)
-}
-
-async function handleSave() {
-  const name = formName.value.trim()
-  if (!name) {
-    error.value = 'Please enter a name'
-    return
-  }
-  if (name.length > 20) {
-    error.value = 'Name must be 20 characters or less'
-    return
-  }
-
-  isSubmitting.value = true
-  error.value = ''
-
-  try {
-    if (props.editingProfile) {
-      await profilesStore.updateProfile(props.editingProfile.id, {
-        name,
-        avatar: formAvatar.value,
-        isKids: formIsKids.value,
-      })
-      const updated = profilesStore.profiles.find(p => p.id === props.editingProfile!.id)
-      if (updated) emit('save', updated)
-    } else {
-      const profile = await profilesStore.createProfile(name, formAvatar.value, formIsKids.value)
-      emit('save', profile)
-    }
-    emit('update:modelValue', false)
-  } catch (err) {
-    error.value = err instanceof Error ? err.message : 'Failed to save profile'
-  } finally {
-    isSubmitting.value = false
-  }
-}
-
-function handleKeydown(e: KeyboardEvent) {
-  if (e.key === 'Escape') handleClose()
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault()
-    handleSave()
-  }
-}
-</script>
 
 <style scoped>
 @keyframes slideUp {
