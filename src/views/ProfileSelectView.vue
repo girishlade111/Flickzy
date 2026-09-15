@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProfilesStore } from '@/stores/profiles'
+import type { Profile } from '@/db/db'
 
 const router = useRouter()
 const profilesStore = useProfilesStore()
 
 const newProfileName = ref('')
+const newProfileAvatar = ref(profilesStore.getRandomAvatar())
+const newProfileKids = ref(false)
 const showAddProfile = ref(false)
 const isCreating = ref(false)
 
 onMounted(async () => {
   await profilesStore.load()
-  // If there's already an active profile, redirect to home
   if (profilesStore.activeProfile) {
     router.replace('/home')
   }
@@ -29,12 +31,14 @@ async function handleCreateProfile() {
 
   isCreating.value = true
   try {
-    const profile = await profilesStore.create(name)
+    const profile = await profilesStore.create(name, newProfileAvatar.value, newProfileKids.value)
     profilesStore.setActive(profile)
     await router.push('/home')
   } finally {
     isCreating.value = false
     newProfileName.value = ''
+    newProfileAvatar.value = profilesStore.getRandomAvatar()
+    newProfileKids.value = false
     showAddProfile.value = false
   }
 }
@@ -42,15 +46,8 @@ async function handleCreateProfile() {
 function cancelCreateProfile() {
   showAddProfile.value = false
   newProfileName.value = ''
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map(n => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
+  newProfileAvatar.value = profilesStore.getRandomAvatar()
+  newProfileKids.value = false
 }
 </script>
 
@@ -214,59 +211,6 @@ function getInitials(name: string): string {
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useProfilesStore } from '@/stores/profiles'
-import type { Profile } from '@/db/db'
-
-const router = useRouter()
-const profilesStore = useProfilesStore()
-
-const newProfileName = ref('')
-const newProfileAvatar = ref(profilesStore.getRandomAvatar())
-const newProfileKids = ref(false)
-const showAddProfile = ref(false)
-const isCreating = ref(false)
-
-onMounted(async () => {
-  await profilesStore.load()
-  if (profilesStore.activeProfile) {
-    router.replace('/home')
-  }
-})
-
-async function selectProfile(profile: Profile) {
-  profilesStore.setActive(profile)
-  await router.push('/home')
-}
-
-async function handleCreateProfile() {
-  const name = newProfileName.value.trim()
-  if (!name || isCreating.value) return
-
-  isCreating.value = true
-  try {
-    const profile = await profilesStore.create(name, newProfileAvatar.value, newProfileKids.value)
-    profilesStore.setActive(profile)
-    await router.push('/home')
-  } finally {
-    isCreating.value = false
-    newProfileName.value = ''
-    newProfileAvatar.value = profilesStore.getRandomAvatar()
-    newProfileKids.value = false
-    showAddProfile.value = false
-  }
-}
-
-function cancelCreateProfile() {
-  showAddProfile.value = false
-  newProfileName.value = ''
-  newProfileAvatar.value = profilesStore.getRandomAvatar()
-  newProfileKids.value = false
-}
-</script>
 
 <style scoped>
 @keyframes slideUp {

@@ -127,5 +127,5 @@ export async function getWatchProgress(profileId: string, contentId: string): Pr
 /** Gets all watch progress for a profile. */
 export async function getAllWatchProgress(profileId: string): Promise<WatchProgressItem[]> {
   const db = await getDb()
-  return db.getAllFromIndex('watchProgress', 'profileId-contentId', profileId)
+  return db.getAllFromIndex('watchProgress', 'profileId-contentId', IDBKeyRange.bound([profileId, ''], [profileId, '\uffff']))
 }

@@ -4,7 +4,6 @@ import {
   addProfile as addToDb,
   removeProfile as removeFromDb,
   getProfiles as getFromDb,
-  getProfile as getOneFromDb,
   type Profile,
 } from '@/db/db'
 
