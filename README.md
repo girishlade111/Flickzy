@@ -94,3 +94,9 @@ gh repo create Flickzy --public --source=. --remote=origin --push
 This project is licensed under the [MIT License](LICENSE).
 
 Made with ❤️ by [Girish Lade](https://github.com/girishlade111).
+
+---
+
+## Built by
+
+**Built by Girish Lade** — https://ladestack.in
